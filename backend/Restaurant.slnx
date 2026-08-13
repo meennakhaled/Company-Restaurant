@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Restaurant.Api/Restaurant.Api.csproj" />
+    <Project Path="src/Restaurant.Application/Restaurant.Application.csproj" />
+    <Project Path="src/Restaurant.Domain/Restaurant.Domain.csproj" />
+    <Project Path="src/Restaurant.Infrastructure/Restaurant.Infrastructure.csproj" />
+  </Folder>
+</Solution>
