@@ -1,0 +1,53 @@
+@host = http://localhost:5088
+
+### Sign in as the admin. Copy accessToken from the response into @token below.
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{ "email": "admin@restaurant.com", "password": "Admin@123" }
+
+@token = paste-the-accessToken-here
+
+### Today's public menu (no auth required)
+GET {{host}}/api/menu?page=1&pageSize=12&onlyAvailable=true
+
+### Today's specials only
+GET {{host}}/api/menu/specials
+
+### Restaurant context — including the authoritative service date
+GET {{host}}/api/restaurant
+
+### The daily menu plan for today (staff/admin)
+GET {{host}}/api/daily-menus
+Authorization: Bearer {{token}}
+
+### Schedule a dish onto a date, with a limited run and a promotional price
+POST {{host}}/api/daily-menus?date=2026-08-20
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "menuItemId": 1, "quantityAvailable": 20, "specialPrice": 12.50, "note": "Chef's pick" }
+
+### Price a cart server-side, before checkout
+POST {{host}}/api/orders/preview
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "type": "Delivery", "items": [ { "menuItemId": 1, "quantity": 2 } ] }
+
+### The active kitchen queue, oldest first
+GET {{host}}/api/orders?activeOnly=true&sortBy=oldest
+Authorization: Bearer {{token}}
+
+### Move an order along the lifecycle (invalid transitions are rejected)
+PATCH {{host}}/api/orders/1/status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "status": "Preparing" }
+
+### Admin dashboard
+GET {{host}}/api/dashboard/overview?days=14
+Authorization: Bearer {{token}}
+
+###
