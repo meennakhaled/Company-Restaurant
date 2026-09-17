@@ -1,0 +1,116 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens for the whole product. Everything downstream uses these names
+ * (bg-brand, text-ink-muted, …) rather than raw colour values, so the palette can be
+ * changed in one place.
+ */
+@theme {
+  /* Warm saffron — the restaurant's identity colour. */
+  --color-brand-50: #fef6ee;
+  --color-brand-100: #fdead7;
+  --color-brand-200: #fad1ae;
+  --color-brand-300: #f7b17a;
+  --color-brand-400: #f28844;
+  --color-brand-500: #ee6a20;
+  --color-brand-600: #df5116;
+  --color-brand-700: #b93c14;
+  --color-brand-800: #933118;
+  --color-brand-900: #772b16;
+
+  /* Warm neutrals: a pure grey next to saffron reads cold and clinical. */
+  --color-ink-50: #faf9f7;
+  --color-ink-100: #f3f1ed;
+  --color-ink-200: #e8e4dd;
+  --color-ink-300: #d5cec3;
+  --color-ink-400: #a9a096;
+  --color-ink-500: #7c736a;
+  --color-ink-600: #5f574f;
+  --color-ink-700: #4a443e;
+  --color-ink-800: #2e2a26;
+  --color-ink-900: #1c1917;
+
+  /* Deep green for the dashboard shell — grounded, not another shade of grey. */
+  --color-forest-700: #1f3d33;
+  --color-forest-800: #17302a;
+  --color-forest-900: #10231f;
+
+  --font-display: 'Playfair Display', ui-serif, Georgia, serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --radius-card: 1rem;
+
+  --shadow-soft: 0 1px 2px rgb(28 25 23 / 0.04), 0 8px 24px -12px rgb(28 25 23 / 0.12);
+  --shadow-lift: 0 2px 4px rgb(28 25 23 / 0.05), 0 16px 40px -16px rgb(28 25 23 / 0.22);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-ink-50 text-ink-900 font-sans antialiased;
+  }
+
+  /* One visible focus style everywhere, so keyboard users never lose their place. */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand-500;
+  }
+
+  /* Chrome/Safari render number spinners that make price inputs jumpy. */
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+}
+
+@layer utilities {
+  /* Used by the toast/modal entrances. Respects reduced-motion via the guard below. */
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fade-in-up 0.24s ease-out both;
+  }
+
+  @keyframes pulse-ring {
+    0% {
+      box-shadow: 0 0 0 0 rgb(238 106 32 / 0.45);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgb(238 106 32 / 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgb(238 106 32 / 0);
+    }
+  }
+
+  /* Draws the eye to brand-new kitchen tickets without being obnoxious. */
+  .animate-pulse-ring {
+    animation: pulse-ring 2s ease-out infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
